@@ -52,9 +52,9 @@ public class CassandraMigrationIT extends BaseIT {
         MigrationInfoService infoService = cm.info();
         System.out.println("Initial migration");
         System.out.println(MigrationInfoDumper.INSTANCE.dumpToAsciiTable(infoService.all()));
-        assertThat(infoService.all().length, is(4));
+        assertThat(infoService.all().length, is(5));
         for (MigrationInfo info : infoService.all()) {
-            assertThat(info.getVersion().getVersion(), anyOf(is("1.0.0"), is("2.0.0"), is("3.0"), is("3.0.1")));
+            assertThat(info.getVersion().getVersion(), anyOf(is("1.0.0"), is("2.0.0"), is("3.0"), is("3.0.1"), is("4.0.0")));
             if (info.getVersion().equals("3.0.1")) {
                 assertThat(info.getDescription(), is("Three point zero one"));
                 assertThat(info.getType().name(), Matchers.is(MigrationType.JAVA_DRIVER.name()));
@@ -108,10 +108,10 @@ public class CassandraMigrationIT extends BaseIT {
         infoService = cm.info();
         System.out.println("Out of order migration with out-of-order ignored");
         System.out.println(MigrationInfoDumper.INSTANCE.dumpToAsciiTable(infoService.all()));
-        assertThat(infoService.all().length, is(5));
+        assertThat(infoService.all().length, is(6));
         for (MigrationInfo info : infoService.all()) {
             assertThat(info.getVersion().getVersion(),
-                    anyOf(is("1.0.0"), is("2.0.0"), is("3.0"), is("3.0.1"), is("1.1.1")));
+                    anyOf(is("1.0.0"), is("2.0.0"), is("3.0"), is("3.0.1"), is("4.0.0"), is("1.1.1")));
             if (info.getVersion().equals("1.1.1")) {
                 assertThat(info.getDescription(), is("Late arrival"));
                 assertThat(info.getType().name(), Matchers.is(MigrationType.CQL.name()));
@@ -132,10 +132,10 @@ public class CassandraMigrationIT extends BaseIT {
         infoService = cm.info();
         System.out.println("Out of order migration with out-of-order allowed");
         System.out.println(MigrationInfoDumper.INSTANCE.dumpToAsciiTable(infoService.all()));
-        assertThat(infoService.all().length, is(6));
+        assertThat(infoService.all().length, is(7));
         for (MigrationInfo info : infoService.all()) {
             assertThat(info.getVersion().getVersion(),
-                    anyOf(is("1.0.0"), is("2.0.0"), is("3.0"), is("3.0.1"), is("1.1.1"), is("1.1.2")));
+                    anyOf(is("1.0.0"), is("2.0.0"), is("3.0"), is("3.0.1"), is("4.0.0"), is("1.1.1"), is("1.1.2")));
             if (info.getVersion().equals("1.1.2")) {
                 assertThat(info.getDescription(), is("Late arrival2"));
                 assertThat(info.getType().name(), Matchers.is(MigrationType.CQL.name()));
@@ -156,10 +156,10 @@ public class CassandraMigrationIT extends BaseIT {
         infoService = cm.info();
         System.out.println("Out of order migration with out-of-order allowed");
         System.out.println(MigrationInfoDumper.INSTANCE.dumpToAsciiTable(infoService.all()));
-        assertThat(infoService.all().length, is(7));
+        assertThat(infoService.all().length, is(8));
         for (MigrationInfo info : infoService.all()) {
             assertThat(info.getVersion().getVersion(),
-                    anyOf(is("1.0.0"), is("2.0.0"), is("3.0"), is("3.0.1"), is("1.1.1"), is("1.1.2"), is("1.1.3")));
+                    anyOf(is("1.0.0"), is("2.0.0"), is("3.0"), is("3.0.1"), is("4.0.0"), is("1.1.1"), is("1.1.2"), is("1.1.3")));
             if (info.getVersion().equals("1.1.3")) {
                 assertThat(info.getDescription(), is("Late arrival3"));
                 assertThat(info.getType().name(), Matchers.is(MigrationType.CQL.name()));
@@ -327,7 +327,7 @@ public class CassandraMigrationIT extends BaseIT {
                 String line;
                 try {
                     while ((line = input.readLine()) != null) {
-                        if (line.contains("Successfully applied 2 migration(s)"))
+                        if (line.contains("Successfully applied 3 migration(s)"))
                             runCmdTestSuccess = true;
                         System.out.println(line);
                     }
